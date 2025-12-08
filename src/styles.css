@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+/* CSS Variables for Dark Theme */
+:root {
+  /* Dark backgrounds - using near-black and dark grays for depth */
+  --background: 222 47% 11%; /* #1a1f2e - Main background (dark blue-gray) */
+  --surface: 222 47% 14%; /* #212633 - Elevated surfaces */
+  --surface-elevated: 222 47% 17%; /* #282e3d - Cards, modals */
+
+  /* Text colors - soft light colors for readability */
+  --foreground: 210 20% 92%; /* #e4e6eb - Primary text (soft white) */
+  --foreground-muted: 215 15% 70%; /* #a8b0c1 - Secondary text */
+  --foreground-subtle: 215 15% 55%; /* #7d8799 - Tertiary text */
+
+  /* Card styles */
+  --card: 222 47% 14%; /* Same as surface */
+  --card-foreground: 210 20% 92%; /* Same as foreground */
+
+  /* Accent colors - muted and desaturated for dark theme */
+  --primary: 217 50% 55%; /* #5b8fd9 - Muted blue accent */
+  --primary-hover: 217 50% 62%; /* Slightly lighter on hover */
+  --primary-foreground: 210 20% 98%; /* #f9fafb - Text on primary */
+
+  /* Secondary accent */
+  --secondary: 222 47% 20%; /* #2d3548 - Subtle surface variant */
+  --secondary-foreground: 210 20% 92%;
+
+  /* Success, warning, error - muted versions */
+  --success: 142 40% 50%; /* #4d9e6d - Muted green */
+  --warning: 38 60% 55%; /* #d9a95b - Muted amber */
+  --destructive: 0 50% 58%; /* #d95b5b - Muted red */
+  --destructive-foreground: 210 20% 98%;
+  /* Borders and inputs */
+  --border: 222 30% 25%; /* #353d4f - Subtle borders */
+  --border-hover: 222 30% 32%; /* Lighter border on hover */
+  --input: 222 30% 22%; /* #2f3645 - Input backgrounds */
+  --input-border: 222 30% 30%; /* #404959 - Input borders */
+
+  /* Surface hover state */
+  --surface-hover: 222 47% 19%; /* Slightly lighter than surface-elevated */
+
+  /* Focus ring */
+  --ring: 217 50% 55%; /* Same as primary */
+
+  /* Border radius */
+  --radius: 0.5rem;
+
+  /* Muted backgrounds for info sections */
+  --muted: 222 47% 17%; /* Same as surface-elevated */
+  --muted-foreground: 215 15% 70%; /* Same as foreground-muted */
+
+  /* Accent variants for different features */
+  --accent-blue: 217 50% 55%;
+  --accent-indigo: 243 50% 60%;
+  --accent-purple: 270 50% 60%;
+  --accent-green: 142 40% 50%;
+  --accent-orange: 25 60% 55%;
+}
+
+/* Base Styles */
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus visible styles for accessibility - flat style */
+*:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Animation classes */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Form specific styles - dark theme autofill */
+input:autofill,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 30px hsl(var(--surface-elevated)) inset !important;
+  -webkit-text-fill-color: hsl(var(--foreground)) !important;
+  caret-color: hsl(var(--foreground));
+}
