@@ -3,6 +3,7 @@ import { authApi } from "../lib/api";
 import { tokenService } from "../lib/token";
 import { useUserQuery } from "../hooks";
 import type { User } from "../types/auth";
+import { useQueryClient } from "@tanstack/react-query"
 
 interface AuthContextType {
   user: User | null;
@@ -19,6 +20,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { data: user, isLoading, refetch } = useUserQuery(isInitialized);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     setIsInitialized(true);
@@ -34,7 +36,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       try {
         const response = await authApi.refresh();
         tokenService.setAccessToken(response.accessToken);
-        refetch();
+        queryClient.setQueryData(["currentUser"], response.user);
       } catch (error) {
         tokenService.clearAccessToken();
         window.location.href = "/login";
