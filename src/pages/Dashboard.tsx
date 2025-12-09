@@ -1,7 +1,20 @@
 import { useAuth } from "../contexts/AuthContext";
 import { useLogout } from "../hooks";
-import { LogOut, User, Settings } from "lucide-react";
+import { Loading } from "../components";
+import {
+  LogOut,
+  User,
+  Settings,
+  Shield,
+  CheckCircle,
+  Lock,
+  Mail,
+  Calendar,
+  Sparkles,
+} from "lucide-react";
 import { Link } from "react-router-dom";
+import { Card, CardContent } from "../components/ui/card";
+import { Button } from "../components/ui/button";
 
 export function Dashboard() {
   const { user, isLoading } = useAuth();
@@ -12,107 +25,115 @@ export function Dashboard() {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}{" "}
-      <header className="bg-white shadow">
+    <div className="min-h-screen bg-[hsl(var(--background))]">
+      {/* Header */}
+      <header className="border-b border-[hsl(var(--border))] bg-[hsl(var(--surface))]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <div className="flex items-center gap-2">
-            <Link
-              to="/settings"
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition-colors"
-            >
-              <Settings className="w-4 h-4" />
-              Settings
+          <h1 className="text-2xl font-bold text-[hsl(var(--foreground))]">
+            Dashboard
+          </h1>
+          <div className="flex items-center gap-3">
+            <Link to="/settings">
+              <Button
+                variant="outline"
+                size="sm"
+                className="inline-flex items-center gap-2"
+              >
+                <Settings className="w-4 h-4" />
+                Settings
+              </Button>
             </Link>
-            <button
+            <Button
+              variant="destructive"
+              size="sm"
               onClick={handleLogout}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors"
+              className="inline-flex items-center gap-2"
             >
               <LogOut className="w-4 h-4" />
               Logout
-            </button>
+            </Button>
           </div>
         </div>
       </header>
+
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 animate-fade-in">
         {/* Welcome Card */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-              <User className="w-8 h-8 text-blue-600" />
-            </div>{" "}
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">
-                Welcome back!
-              </h2>
-              <p className="text-gray-600">{user?.email}</p>
-              <div className="mt-2">
+        <Card className="border-[hsl(var(--border))]">
+          <CardContent className="p-8">
+            <div className="flex items-center gap-6">
+              <div className="w-20 h-20 bg-[hsl(var(--primary)/0.2)] border-2 border-[hsl(var(--primary)/0.3)] rounded-full flex items-center justify-center shrink-0">
+                <User className="w-10 h-10 text-[hsl(var(--primary))]" />
+              </div>
+              <div className="flex-1">
+                <h2 className="text-3xl font-bold text-[hsl(var(--foreground))] mb-2">
+                  Welcome back!
+                </h2>
+                <p className="text-[hsl(var(--muted-foreground))] text-lg mb-3">
+                  {user?.email}
+                </p>
                 <span
-                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                  className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
                     user?.role === "ADMIN"
-                      ? "bg-purple-100 text-purple-800"
+                      ? "bg-[hsl(var(--primary)/0.2)] text-[hsl(var(--primary))] border border-[hsl(var(--primary)/0.3)]"
                       : user?.role === "MODERATOR"
-                        ? "bg-blue-100 text-blue-800"
-                        : "bg-gray-100 text-gray-800"
+                        ? "bg-[hsl(var(--warning)/0.2)] text-[hsl(var(--warning))] border border-[hsl(var(--warning)/0.3)]"
+                        : "bg-[hsl(var(--muted)/0.5)] text-[hsl(var(--muted-foreground))] border border-[hsl(var(--border))]"
                   }`}
                 >
+                  <Sparkles className="w-3 h-3 mr-1.5" />
                   {user?.role || "USER"}
                 </span>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* User Profile Card */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">
-            Profile Information
-          </h3>
-          <div className="space-y-4">
-            {" "}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+        <Card className="border-[hsl(var(--border))]">
+          <CardContent className="p-8">
+            <h3 className="text-xl font-bold text-[hsl(var(--foreground))] mb-6 flex items-center">
+              <User className="w-5 h-5 mr-2 text-[hsl(var(--primary))]" />
+              Profile Information
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="flex items-center text-sm font-medium text-[hsl(var(--muted-foreground))]">
+                  <Mail className="w-4 h-4 mr-2" />
                   Email Address
                 </label>
-                <div className="px-4 py-2 bg-gray-50 rounded-md border border-gray-200">
+                <div className="px-4 py-3 bg-[hsl(var(--surface))] rounded-lg border border-[hsl(var(--border))] text-[hsl(var(--foreground))]">
                   {user?.email || "N/A"}
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="space-y-2">
+                <label className="flex items-center text-sm font-medium text-[hsl(var(--muted-foreground))]">
+                  <Shield className="w-4 h-4 mr-2" />
                   Role
                 </label>
-                <div className="px-4 py-2 bg-gray-50 rounded-md border border-gray-200">
+                <div className="px-4 py-3 bg-[hsl(var(--surface))] rounded-lg border border-[hsl(var(--border))] text-[hsl(var(--foreground))]">
                   {user?.role || "USER"}
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="space-y-2">
+                <label className="flex items-center text-sm font-medium text-[hsl(var(--muted-foreground))]">
+                  <Lock className="w-4 h-4 mr-2" />
                   User ID
                 </label>
-                <div className="px-4 py-2 bg-gray-50 rounded-md border border-gray-200 font-mono text-sm">
+                <div className="px-4 py-3 bg-[hsl(var(--surface))] rounded-lg border border-[hsl(var(--border))] text-[hsl(var(--foreground))] font-mono text-sm">
                   {user?.id || "N/A"}
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="space-y-2">
+                <label className="flex items-center text-sm font-medium text-[hsl(var(--muted-foreground))]">
+                  <Calendar className="w-4 h-4 mr-2" />
                   Account Created
                 </label>
-                <div className="px-4 py-2 bg-gray-50 rounded-md border border-gray-200">
+                <div className="px-4 py-3 bg-[hsl(var(--surface))] rounded-lg border border-[hsl(var(--border))] text-[hsl(var(--foreground))]">
                   {user?.createdAt
                     ? new Date(user.createdAt).toLocaleDateString("en-US", {
                         year: "numeric",
@@ -123,88 +144,64 @@ export function Dashboard() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Account Status
-                </p>
-                <p className="text-2xl font-bold text-green-600 mt-1">Active</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card className="border-[hsl(var(--border))] transition-all duration-300 hover:border-[hsl(var(--success)/0.5)]">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-[hsl(var(--muted-foreground))]">
+                    Account Status
+                  </p>
+                  <p className="text-3xl font-bold text-[hsl(var(--success))] mt-2">
+                    Active
+                  </p>
+                </div>
+                <div className="w-14 h-14 bg-[hsl(var(--success)/0.2)] border border-[hsl(var(--success)/0.3)] rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-7 h-7 text-[hsl(var(--success))]" />
+                </div>
               </div>
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-green-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Authentication
-                </p>
-                <p className="text-2xl font-bold text-blue-600 mt-1">JWT</p>
+          <Card className="border-[hsl(var(--border))] transition-all duration-300 hover:border-[hsl(var(--primary)/0.5)]">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-[hsl(var(--muted-foreground))]">
+                    Authentication
+                  </p>
+                  <p className="text-3xl font-bold text-[hsl(var(--primary))] mt-2">
+                    JWT
+                  </p>
+                </div>
+                <div className="w-14 h-14 bg-[hsl(var(--primary)/0.2)] border border-[hsl(var(--primary)/0.3)] rounded-full flex items-center justify-center">
+                  <Lock className="w-7 h-7 text-[hsl(var(--primary))]" />
+                </div>
               </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-blue-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Session</p>
-                <p className="text-2xl font-bold text-purple-600 mt-1">
-                  Secure
-                </p>
+          <Card className="border-[hsl(var(--border))] transition-all duration-300 hover:border-[hsl(var(--warning)/0.5)]">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-[hsl(var(--muted-foreground))]">
+                    Session
+                  </p>
+                  <p className="text-3xl font-bold text-[hsl(var(--warning))] mt-2">
+                    Secure
+                  </p>
+                </div>
+                <div className="w-14 h-14 bg-[hsl(var(--warning)/0.2)] border border-[hsl(var(--warning)/0.3)] rounded-full flex items-center justify-center">
+                  <Shield className="w-7 h-7 text-[hsl(var(--warning))]" />
+                </div>
               </div>
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-purple-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </main>
     </div>
