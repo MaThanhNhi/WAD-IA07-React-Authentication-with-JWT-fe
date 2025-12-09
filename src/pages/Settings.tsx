@@ -1,7 +1,7 @@
-import { useAuth } from '../contexts/AuthContext';
-import { SessionManager } from '../components/SessionManager';
-import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { useAuth } from "../contexts/AuthContext";
+import { SessionManager } from "../components/SessionManager";
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 export function Settings() {
   const { user } = useAuth();
@@ -32,17 +32,25 @@ export function Settings() {
             <h2 className="text-lg font-semibold mb-4">Account Information</h2>
             <div className="space-y-2">
               <div>
-                <span className="text-sm font-medium text-gray-700">Email:</span>
-                <span className="ml-2 text-sm text-gray-900">{user?.email}</span>
+                <span className="text-sm font-medium text-gray-700">
+                  Email:
+                </span>
+                <span className="ml-2 text-sm text-gray-900">
+                  {user?.email}
+                </span>
               </div>
               <div>
                 <span className="text-sm font-medium text-gray-700">Role:</span>
-                <span className={`ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                  user?.role === 'ADMIN' ? 'bg-purple-100 text-purple-800' :
-                  user?.role === 'MODERATOR' ? 'bg-blue-100 text-blue-800' :
-                  'bg-gray-100 text-gray-800'
-                }`}>
-                  {user?.role || 'USER'}
+                <span
+                  className={`ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                    user?.role === "ADMIN"
+                      ? "bg-purple-100 text-purple-800"
+                      : user?.role === "MODERATOR"
+                        ? "bg-blue-100 text-blue-800"
+                        : "bg-gray-100 text-gray-800"
+                  }`}
+                >
+                  {user?.role || "USER"}
                 </span>
               </div>
             </div>
@@ -57,7 +65,9 @@ export function Settings() {
             <ul className="space-y-2 text-sm text-gray-600">
               <li className="flex items-start">
                 <span className="text-green-500 mr-2">✓</span>
-                <span>HTTP-only cookies for refresh tokens (XSS protection)</span>
+                <span>
+                  HTTP-only cookies for refresh tokens (XSS protection)
+                </span>
               </li>
               <li className="flex items-start">
                 <span className="text-green-500 mr-2">✓</span>

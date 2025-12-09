@@ -12,7 +12,7 @@ export interface LoginPayload {
 
 // ==================== Response Types ====================
 
-export type Role = 'USER' | 'ADMIN' | 'MODERATOR';
+export type Role = "USER" | "ADMIN" | "MODERATOR";
 
 export interface User {
   id: string;

@@ -1,15 +1,21 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { authApi } from '../lib/api';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import type { Session } from '../types/auth';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { authApi } from "../lib/api";
+import { Button } from "./ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import type { Session } from "../types/auth";
 
 export const SessionManager = () => {
   const queryClient = useQueryClient();
 
   // Fetch active sessions
   const { data: sessions, isLoading } = useQuery({
-    queryKey: ['sessions'],
+    queryKey: ["sessions"],
     queryFn: () => authApi.getSessions(),
   });
 
@@ -17,7 +23,7 @@ export const SessionManager = () => {
   const revokeMutation = useMutation({
     mutationFn: (sessionId: string) => authApi.revokeSession(sessionId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['sessions'] });
+      queryClient.invalidateQueries({ queryKey: ["sessions"] });
     },
   });
 
@@ -25,7 +31,7 @@ export const SessionManager = () => {
   const logoutAllMutation = useMutation({
     mutationFn: () => authApi.logoutAllDevices(),
     onSuccess: () => {
-      window.location.href = '/login';
+      window.location.href = "/login";
     },
   });
 
@@ -34,12 +40,12 @@ export const SessionManager = () => {
   };
 
   const getBrowserName = (userAgent?: string) => {
-    if (!userAgent) return 'Unknown';
-    if (userAgent.includes('Chrome')) return 'Chrome';
-    if (userAgent.includes('Firefox')) return 'Firefox';
-    if (userAgent.includes('Safari')) return 'Safari';
-    if (userAgent.includes('Edge')) return 'Edge';
-    return 'Unknown Browser';
+    if (!userAgent) return "Unknown";
+    if (userAgent.includes("Chrome")) return "Chrome";
+    if (userAgent.includes("Firefox")) return "Firefox";
+    if (userAgent.includes("Safari")) return "Safari";
+    if (userAgent.includes("Edge")) return "Edge";
+    return "Unknown Browser";
   };
 
   if (isLoading) {

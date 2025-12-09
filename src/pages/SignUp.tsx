@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRegister } from "../hooks/useRegister";
+import { useAuth } from "../contexts/AuthContext";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import { Loading } from "../components";
 import {
   Card,
   CardHeader,
@@ -22,6 +24,7 @@ import {
   UserPlus,
 } from "lucide-react";
 import { z } from "zod";
+import { useEffect } from "react";
 
 const registerSchema = z
   .object({
@@ -47,6 +50,15 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 
 export function SignUp() {
   const navigate = useNavigate();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  // Auto-redirect authenticated users to dashboard
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
+
   const {
     register,
     handleSubmit,
@@ -78,6 +90,12 @@ export function SignUp() {
       password: data.password,
     });
   };
+
+  // Show loading spinner while checking authentication
+  if (isLoading) {
+    return <Loading message="Checking authentication..." />;
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--background))] p-4">
       <div className="w-full max-w-md space-y-4 animate-fade-in">

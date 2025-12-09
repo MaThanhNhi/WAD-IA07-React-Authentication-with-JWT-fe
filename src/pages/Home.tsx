@@ -1,9 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
+import { Loading } from "../components";
 import { UserPlus, LogIn, Shield, Mail, Lock, Sparkles } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
+import { useEffect } from "react";
 
 export function Home() {
+  const navigate = useNavigate();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  // Auto-redirect authenticated users to dashboard
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
+
+  // Show loading spinner while checking authentication
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[hsl(var(--background))] p-4">
       <div className="w-full max-w-2xl space-y-6 animate-fade-in">

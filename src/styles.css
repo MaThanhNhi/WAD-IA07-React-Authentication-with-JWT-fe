@@ -127,3 +127,17 @@ input:-webkit-autofill:focus {
   -webkit-text-fill-color: hsl(var(--foreground)) !important;
   caret-color: hsl(var(--foreground));
 }
+
+/* Hide browser's built-in password reveal button */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+/* Hide Chrome/Edge/Safari password reveal icon */
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-textfield-decoration-container {
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+}

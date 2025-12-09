@@ -4,6 +4,7 @@ import { useLogin } from "../hooks/useLogin";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import { Loading } from "../components";
 import {
   Card,
   CardHeader,
@@ -23,6 +24,7 @@ import {
   LogIn as LogInIcon,
 } from "lucide-react";
 import { z } from "zod";
+import { useEffect } from "react";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email format").min(1, "Email is required"),
@@ -33,7 +35,15 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export function Login() {
   const navigate = useNavigate();
-  const { refetchUser } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  // Auto-redirect authenticated users to dashboard
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
+
   const {
     register,
     handleSubmit,
@@ -43,24 +53,12 @@ export function Login() {
     resolver: zodResolver(loginSchema),
   });
 
-  // Use custom React Query hook for login
   const { mutate, isPending, isSuccess, isError, error } = useLogin({
-    onSuccess: async (data) => {
-      console.log("Login successful:", data);
-      console.log("Access token set, now refetching user data...");
+    onSuccess: () => {
       reset();
-      // Refetch user data to update authentication state
-      try {
-        await refetchUser();
-        console.log("User data refetched successfully, navigating to dashboard...");
-        // Redirect to dashboard after successful login
-        setTimeout(() => {
-          console.log("Executing navigation to /dashboard");
-          navigate("/dashboard");
-        }, 800);
-      } catch (error) {
-        console.error("Failed to refetch user data:", error);
-      }
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 800);
     },
     onError: (error) => {
       console.error("Login error:", error);
@@ -70,6 +68,11 @@ export function Login() {
   const onSubmit = (data: LoginFormData) => {
     mutate(data);
   };
+
+  // Show loading spinner while checking authentication
+  if (isLoading) {
+    return <Loading message="Checking authentication..." />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--background))] p-4">

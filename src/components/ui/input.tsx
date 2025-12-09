@@ -19,10 +19,11 @@ const Input = React.forwardRef<
         type={isPassword && showPassword ? "text" : type}
         className={cn(
           "flex h-10 w-full rounded-md border border-[hsl(var(--border))] bg-[hsl(var(--surface-elevated))] px-3 py-2 text-base text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--background))] focus-visible:border-[hsl(var(--primary))] hover:border-[hsl(var(--border-hover))] disabled:cursor-not-allowed disabled:opacity-50",
-          isPassword && "pr-10", // Add padding for the eye icon
+          isPassword && "pr-10",
           className,
         )}
         ref={ref}
+        autoComplete={isPassword ? "current-password" : props.autoComplete}
         {...props}
       />
       {isPassword && (

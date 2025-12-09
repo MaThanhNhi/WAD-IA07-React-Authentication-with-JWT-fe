@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "../lib/api";
 import { tokenService } from "../lib/token";
@@ -11,33 +11,25 @@ interface UseLogoutOptions {
 
 export const useLogout = (options?: UseLogoutOptions) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async () => {
-      // Call logout endpoint to invalidate refresh token on server
       await authApi.logout();
     },
 
     onSuccess: () => {
-      // Clear all tokens from storage
-      tokenService.clearAllTokens();
-
-      // Call user-provided onSuccess callback
+      tokenService.clearAccessToken();
+      queryClient.setQueryData(["currentUser"], null);
       options?.onSuccess?.();
-
-      // Redirect to login page
-      navigate("/login");
+      navigate("/login", { replace: true });
     },
 
     onError: (error: ApiError) => {
-      // Even if logout request fails, clear tokens locally
-      tokenService.clearAllTokens();
-
-      // Call user-provided onError callback
+      tokenService.clearAccessToken();
+      queryClient.setQueryData(["currentUser"], null);
       options?.onError?.(error);
-
-      // Still redirect to login
-      navigate("/login");
+      navigate("/login", { replace: true });
     },
 
     retry: false,

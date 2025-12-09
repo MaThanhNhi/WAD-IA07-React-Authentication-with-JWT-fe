@@ -1,4 +1,8 @@
-import { useMutation, type UseMutationResult } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  type UseMutationResult,
+} from "@tanstack/react-query";
 import { authApi } from "../lib/api";
 import { tokenService } from "../lib/token";
 import type { LoginPayload, LoginResponse } from "../types/auth";
@@ -13,21 +17,19 @@ interface UseLoginOptions {
 export const useLogin = (
   options?: UseLoginOptions,
 ): UseMutationResult<LoginResponse, ApiError, LoginPayload> => {
+  const queryClient = useQueryClient();
+
   return useMutation<LoginResponse, ApiError, LoginPayload>({
     mutationFn: (data: LoginPayload) => authApi.login(data),
 
     onSuccess: (data) => {
-      // Store access token (refresh token is in HTTP-only cookie)
       tokenService.setAccessToken(data.accessToken);
-
-      // Call user-provided onSuccess callback
+      queryClient.setQueryData(["currentUser"], data.user);
       options?.onSuccess?.(data);
     },
 
     onError: (error) => {
-      // Clear any existing tokens on login failure
-      tokenService.clearAllTokens();
-      
+      tokenService.clearAccessToken();
       options?.onError?.(error);
     },
 
@@ -35,7 +37,7 @@ export const useLogin = (
       options?.onSettled?.();
     },
 
-    retry: false, // Don't retry on failure
+    retry: false,
     networkMode: "online",
   });
 };

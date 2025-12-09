@@ -14,21 +14,7 @@ export const useRegister = (
 ): UseMutationResult<RegisterResponse, ApiError, RegisterPayload> => {
   return useMutation<RegisterResponse, ApiError, RegisterPayload>({
     mutationFn: (data: RegisterPayload) => userApi.register(data),
-
-    onSuccess: (data) => {
-      console.log("✅ Registration successful:", data);
-      options?.onSuccess?.(data);
-    },
-
-    onError: (error) => {
-      console.error("❌ Registration failed:", error);
-      options?.onError?.(error);
-    },
-
-    onSettled: () => {
-      options?.onSettled?.();
-    },
-
+    ...options,
     retry: false, // Don't retry on failure (user input errors)
     networkMode: "online", // Only run when online
   });

@@ -1,6 +1,6 @@
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import type { Role } from '../types/auth';
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import type { Role } from "../types/auth";
 
 interface RoleGuardProps {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ interface RoleGuardProps {
 export const RoleGuard: React.FC<RoleGuardProps> = ({
   children,
   allowedRoles,
-  redirectTo = '/dashboard',
+  redirectTo = "/dashboard",
 }) => {
   const { user, isLoading } = useAuth();
 
