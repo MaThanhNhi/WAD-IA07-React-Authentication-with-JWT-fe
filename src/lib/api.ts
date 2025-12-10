@@ -138,6 +138,14 @@ apiClient.interceptors.response.use(
 // ==================== Auth API ====================
 
 export const authApi = {
+  register: async (data: RegisterPayload): Promise<RegisterResponse> => {
+    const response = await apiClient.post<RegisterResponse>(
+      "/auth/register",
+      data,
+    );
+    return response.data;
+  },
+
   login: async (data: LoginPayload): Promise<LoginResponse> => {
     const response = await apiClient.post<LoginResponse>("/auth/login", data);
     return response.data;
@@ -158,11 +166,6 @@ export const authApi = {
     window.localStorage.setItem("logout-event", Date.now().toString());
   },
 
-  getMe: async (): Promise<User> => {
-    const response = await apiClient.get<User>("/auth/me");
-    return response.data;
-  },
-
   getSessions: async (): Promise<any[]> => {
     const response = await apiClient.get("/auth/sessions");
     return response.data;
@@ -174,11 +177,18 @@ export const authApi = {
 };
 
 export const userApi = {
-  register: async (data: RegisterPayload): Promise<RegisterResponse> => {
-    const response = await apiClient.post<RegisterResponse>(
-      "/user/register",
-      data,
-    );
+  getMe: async (): Promise<User> => {
+    const response = await apiClient.get<User>("/user/me");
+    return response.data;
+  },
+
+  getAllUsers: async (): Promise<any> => {
+    const response = await apiClient.get("/user/admin/users");
+    return response.data;
+  },
+
+  getModerationStats: async (): Promise<any> => {
+    const response = await apiClient.get("/user/moderation/stats");
     return response.data;
   },
 };

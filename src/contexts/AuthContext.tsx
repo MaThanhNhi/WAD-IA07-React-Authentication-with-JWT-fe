@@ -3,7 +3,7 @@ import { authApi } from "../lib/api";
 import { tokenService } from "../lib/token";
 import { useUserQuery } from "../hooks";
 import type { User } from "../types/auth";
-import { useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query";
 
 interface AuthContextType {
   user: User | null;

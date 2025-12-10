@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { authApi } from "../lib/api";
+import { authApi, userApi } from "../lib/api";
 import { tokenService } from "../lib/token";
 import type { User } from "../types/auth";
 
@@ -20,7 +20,7 @@ export const useUserQuery = (isInitialized: boolean) => {
       }
 
       try {
-        const userData = await authApi.getMe();
+        const userData = await userApi.getMe();
         return userData;
       } catch (error) {
         tokenService.clearAccessToken();

@@ -103,7 +103,8 @@ export function Settings() {
                     HTTP-only Cookies
                   </p>
                   <p className="text-sm text-[hsl(var(--muted-foreground))]">
-                    Refresh tokens stored in HTTP-only cookies for XSS protection
+                    Refresh tokens stored in HTTP-only cookies for XSS
+                    protection
                   </p>
                 </div>
                 <CheckCircle className="w-5 h-5 text-[hsl(var(--success))] shrink-0" />
@@ -175,7 +176,10 @@ export function Settings() {
         {/* Back to Dashboard Button */}
         <div className="flex justify-center pt-4">
           <Link to="/dashboard">
-            <Button variant="outline" className="inline-flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="inline-flex items-center gap-2"
+            >
               <ArrowLeft className="w-4 h-4" />
               Return to Dashboard
             </Button>
